@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const orderDetailSchema = new Schema({
+const orderHistorySchema = new Schema({
     userID: {
         type: String,
         required: false
@@ -33,7 +33,6 @@ const orderDetailSchema = new Schema({
         required: false,
         default: 'pending'
     }
-    
 });
 
-module.exports = mongoose.model('OrderDetail', orderDetailSchema);
+module.exports = mongoose.model('OrderHistory', orderHistorySchema);

@@ -13,6 +13,7 @@ const corsOptions = require('./config/corsOrigins');
 const credentials = require('./middleware/credentials');
 const connectDB = require('./config/dbConnect');
 
+
 const PORT = process.env.PORT || 5000;
 
 
@@ -33,12 +34,15 @@ app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use('/', express.static('./routes/api/root.js'));
 app.use('/subdir', require('./routes/api/subdir'));
 app.use('/register', require('./routes/api/register'));
+app.use('/blog', require('./routes/api/blog'));
 app.use('/login', require('./routes/api/login'));
-app.use('/refresh', require('./routes/api/refresh'));
 app.use('/logout', require('./routes/api/logout'));
 app.use('/cartItems', require('./routes/api/cartItems'));
-
-
+app.use('/productDetail', require('./routes/api/productDetail'));
+app.use('/refresh', require('./routes/api/refresh'));
+app.use('/blogComment', require('./routes/api/blogComment'));
+app.use('/productComment', require('./routes/api/productComment'));
+app.use('/orderHistory', require('./routes/api/orderHistory'));
 
 app.get('/', async (req, res) => {
     res.send('Welcome to the Guitar Store API');
