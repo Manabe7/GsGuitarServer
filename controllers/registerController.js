@@ -26,6 +26,8 @@ const handleNewUser = async (req, res) => {
             firstName: firstName,
             lastName: lastName,
             email: email,
+            darkMode: false,
+            image: "https://api.dicebear.com/9.x/toon-head/svg?scale=120&skinColor=f1c3a5,c68e7a,b98e6a&backgroundColor=b6e3f4&seed=Brian",
             password: hashedPwd,
             roles: { User: 2001 } 
         });

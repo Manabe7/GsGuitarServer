@@ -28,8 +28,7 @@ const handleLogout = async (req, res) => {
     // Clear the cookie
     res.clearCookie('jwt', { httpOnly: true, sameSite: 'none', secure : true });
     
-    res.sendStatus(200); // No content
-    res.send('Logout successful');
+    res.status(200).send('Logout successful');
 }
 
 module.exports = { handleLogout };

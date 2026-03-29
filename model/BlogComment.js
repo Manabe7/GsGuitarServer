@@ -31,6 +31,11 @@ const BlogCommentSchema = new Schema({
                 date: {
                     type: Date,
                     required: false,
+                },
+                isEditing: {
+                    type: Boolean,
+                    required: false,
+                    default: false
                 }
             }
         ]

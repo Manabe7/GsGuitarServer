@@ -1,5 +1,5 @@
 const Users = require('../model/User');
-
+const UserSettings = require('../model/UserSetting');
 const jwt = require('jsonwebtoken');
 
 const handleRefreshToken = async (req, res) => {
@@ -14,10 +14,13 @@ const handleRefreshToken = async (req, res) => {
     if (!foundUser) {
         return res.sendStatus(403); // Forbidden
     }
+    const foundUserSettings = await UserSettings.findOne({ userID: foundUser._id }).exec();
 
     const currentUser = {
         email: foundUser.email,
         firstName: foundUser.firstName,
+        image: foundUser.image,
+        darkMode: foundUserSettings?.darkMode || false,
         roles: foundUser.roles
     }
 
@@ -35,7 +38,7 @@ const handleRefreshToken = async (req, res) => {
                 process.env.ACCESS_TOKEN_SECRET,
                 { expiresIn: '15m' }
             );
-            res.json({ accessToken, currentUser });
+            res.status(200).json({ accessToken, currentUser });
             console.log(currentUser); // Send the new access token to the client
             console.log('New Access Token:', accessToken);
         }

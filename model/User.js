@@ -14,6 +14,10 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    image: {
+        type: String,
+        default: null
+    },
     roles: {
         User: {
             type: Number,

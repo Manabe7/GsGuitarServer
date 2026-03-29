@@ -4,6 +4,7 @@ const cartItems = require('../model/cartItems');
 const Product = require('../model/Product');
 const ProductDetail = require('../model/ProductDetail');
 const UserProfile = require('../model/UserProfile')
+const Notification = require('../model/Notification');
 const mongoose = require('mongoose');
 
 // Add a new order to order history
@@ -29,9 +30,13 @@ exports.createOrderHistory = async (req, res) => {
             product.quantity = Math.max(0, product.quantity - item.quantity);
             await product.save();
         }
+        const  itemDetail = {productName: product.name, quantity: item.quantity};
+        return itemDetail;
     };
+    const itemDetails = [];
     for (const item of orderItems) {
-        await decreaseProductStock(item);
+        const itemDetail = await decreaseProductStock(item);
+        itemDetails.push(itemDetail);
     }
 
     try {
@@ -42,10 +47,28 @@ exports.createOrderHistory = async (req, res) => {
             orderDate,
             status : 'pending'
         });
+        const userNotification = await Notification.findOne({ userID: foundUser._id }).exec();
+        const notiMessage = `Your order for ${itemDetails.map(detail => `${detail.productName} (x${detail.quantity})`).join(', ')} with total amount $${totalAmount} has been created successfully.`;
+        if (userNotification) {
+            userNotification.notifications.push({
+                message: notiMessage,
+                date: new Date()
+            });
+            await userNotification.save();
+        } else {
+            const newNotification = new Notification({
+                userID: foundUser._id,
+                notifications: [{
+                    message: notiMessage,
+                    date: new Date()
+                }]
+            });
+            await newNotification.save();
+        }
         await newOrderHistory.save();
         // Clear the user's cart after successful order creation
         await cartItems.deleteOne({ userID: foundUser._id }).exec();
-        res.status(201).json({ message: 'Order history created successfully', orderHistory: newOrderHistory });
+        res.status(201).json({ message: 'Order history created successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
     }

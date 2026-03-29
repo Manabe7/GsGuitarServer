@@ -43,8 +43,10 @@ exports.addComment = async (req, res) => {
         const newComment = {
             email: foundUser.email,
             firstName: foundUser.firstName,
+            image: foundUser.image,
             commentText,
-            date
+            date,
+            isEditing: false
         };
         if (productComment) {
             productComment.comments.push(newComment);
@@ -55,7 +57,7 @@ exports.addComment = async (req, res) => {
             });
         }
         await productComment.save();
-        res.status(201).json({ message: 'Comment added successfully', comment: newComment });
+        res.status(200).json({ message: 'Comment added successfully', comment: newComment });
         } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
         }   
@@ -71,12 +73,13 @@ exports.getComments = async (req, res) => {
     const productComment = await ProductComment.findOne({ productId : productId });
     try {
         if (!productComment) {
-            productComment = new ProductComment({
+            const newProductComment = {
                 productId,
                 comments: []
-            });
-            await productComment.save();
-            return res.status(200).json({ productComment, message: 'No comments for this product yet' });
+            };
+            const result = await ProductComment.create(newProductComment);
+            await result.save();
+            return res.status(200).json({ result, message: 'No comments for this product yet' });
         }
         res.status(200).json(productComment.comments);
     } catch (error) {

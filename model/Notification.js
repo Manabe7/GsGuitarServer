@@ -6,19 +6,23 @@ const notificationSchema = new Schema({
         type: String,
         required: false
     },
-    message: {
+    notifications : [
+    {
+        message: {
         type: String,
         required: false
-    },
-    date: {
-        type: Date,
-        required: false
-    },
-    read: {
-        type: Boolean,
-        required: false,
-        default: false
+        },
+        date: {
+            type: Date,
+            required: false
+        },
+        read: {
+            type: Boolean,
+            required: false,
+            default: false
+        }
     }
+    ]
 });
 
 module.exports = mongoose.model('Notification', notificationSchema);

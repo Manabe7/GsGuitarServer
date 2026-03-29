@@ -36,14 +36,19 @@ app.use('/subdir', require('./routes/api/subdir'));
 app.use('/register', require('./routes/api/register'));
 app.use('/blog', require('./routes/api/blog'));
 app.use('/login', require('./routes/api/login'));
-app.use('/logout', require('./routes/api/logout'));
-app.use('/cartItems', require('./routes/api/cartItems'));
 app.use('/productDetail', require('./routes/api/productDetail'));
 app.use('/refresh', require('./routes/api/refresh'));
+
+
+app.use('/logout', require('./routes/api/logout'));
 app.use('/blogComment', require('./routes/api/blogComment'));
 app.use('/productComment', require('./routes/api/productComment'));
 app.use('/orderHistory', require('./routes/api/orderHistory'));
-
+app.use('/userProfileImage', require('./routes/api/userProfileImage'));
+app.use('/userSetting', require('./routes/api/userSetting'));
+app.use('/cartItems', require('./routes/api/cartItems'));
+app.use('/userPayment', require('./routes/api/userPayment'));
+app.use('/notifications', require('./routes/api/notification'));
 app.get('/', async (req, res) => {
     res.send('Welcome to the Guitar Store API');
 });

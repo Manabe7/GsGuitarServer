@@ -4,7 +4,7 @@ const verifyJWT = (req, res, next) => {
     const authHeader = req.headers.authorization || req.headers.Authorization; // Get the Authorization header from the request
     // Check if the Authorization header is present
     console.log('Authorization Header:', authHeader);
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!authHeader || !authHeader.startsWith('Bearer')) {
         return res.sendStatus(401); // Unauthorized
     }
     console.log(authHeader);
