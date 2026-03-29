@@ -1,6 +1,7 @@
 require('dotenv').config();
 const Users = require('../model/User');
 const bcrypt = require('bcrypt');
+const UserSettings = require('../model/UserSetting');
 const jwt = require('jsonwebtoken');
 
 const handleLogin = async (req, res) => {
@@ -34,10 +35,12 @@ const handleLogin = async (req, res) => {
         );
         // Store refresh token in the user object (or database)
         await Users.updateOne({ email: foundUser.email }, { refreshToken: refreshToken });
+        const UserSetting = await UserSettings.findOne({ userID: foundUser._id }).exec();
         const currentUser = {
             email: foundUser.email,
             firstName: foundUser.firstName,
             image: foundUser.image,
+            darkMode: UserSetting?.darkMode || false,
             roles: foundUser.roles
         };
 
